@@ -13,9 +13,9 @@ import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
+@Entity
 public class Usuario {
 
     @Id
@@ -34,7 +34,7 @@ public class Usuario {
 
     private String fotoPerfil;
 
-    private LocalDate dataNascimento;]
+    private LocalDate dataNascimento;
 
     @Column(columnDefinition = "boolean default true")
     private boolean ativo = true;

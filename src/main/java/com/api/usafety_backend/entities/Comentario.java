@@ -31,7 +31,7 @@ public class Comentario {
     @Column(columnDefinition = "boolean default true")
     private boolean visivel = true;
 
-    @ManyToMany()
+    @ManyToOne()
     @JoinColumn(name = "id_usuario")
     private Usuario autor;
 

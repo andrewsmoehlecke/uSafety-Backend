@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -85,4 +86,11 @@ public class Usuario {
     public void addCargo(Cargos c) {
         cargos.add(c);
     }
+
+    public List<SimpleGrantedAuthority> getAuthorities() {
+        return cargos.stream().map(cargo -> {
+            return new SimpleGrantedAuthority("ROLE_".concat(cargo.getCargo()));
+        }).collect(Collectors.toList());
+    }
+
 }

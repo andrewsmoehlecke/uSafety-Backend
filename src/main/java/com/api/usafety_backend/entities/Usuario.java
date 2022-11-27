@@ -1,6 +1,7 @@
 package com.api.usafety_backend.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,13 +22,14 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.api.usafety_backend.entities.dtos.UsuarioDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@NoArgsConstructor
+@ToString
 @Entity
 public class Usuario {
 
@@ -50,6 +52,9 @@ public class Usuario {
 
     private LocalDate dataNascimento;
 
+    @Column(columnDefinition = "TIMESTAMP")
+    private final LocalDateTime criacaoConta = LocalDateTime.now();
+
     @Column(columnDefinition = "boolean default true")
     private boolean ativo = true;
 
@@ -65,7 +70,7 @@ public class Usuario {
     private Set<Cargos> cargos = new HashSet<>();
 
     public enum Cargos {
-        ADMIN("ADMIN"), USUARIO("USER");
+        ADMIN("ADMIN"), USUARIO("USUARIO");
 
         private final String cargo;
 
@@ -76,6 +81,22 @@ public class Usuario {
         public String getCargo() {
             return cargo;
         }
+    }
+
+    public Usuario() {
+        super();
+    }
+
+    public Usuario(UsuarioDto u) {
+        this.id = u.getId();
+        this.username = u.getUsername();
+        this.nomeCompleto = u.getNomeCompleto();
+        this.email = u.getEmail();
+        this.senha = u.getSenha();
+        this.fotoPerfil = u.getFotoPerfil();
+        this.dataNascimento = u.getDataNascimento();
+        this.ativo = u.isAtivo();
+        this.cargos = u.getCargos();
     }
 
     public List<String> getCargosString() {

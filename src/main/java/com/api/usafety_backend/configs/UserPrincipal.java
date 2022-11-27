@@ -35,6 +35,20 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
+    public UserPrincipal(String username, List<String> cargos) {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        this.username = username;
+        this.password = null;
+        this.enable = true;
+
+        authorities = cargos.stream().map(cargo -> {
+            return new SimpleGrantedAuthority("ROLE_".concat(cargo));
+        }).collect(Collectors.toList());
+
+        this.authorities = authorities;
+    }
+
     public static UserPrincipal create(Usuario u) {
         return new UserPrincipal(u);
     }

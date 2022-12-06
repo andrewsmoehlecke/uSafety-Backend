@@ -30,16 +30,20 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    private final Constantes constantes = new Constantes();
+
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
-        String header = req.getHeader(Constantes.HEADER_AUTHORIZATION);
+
+        String header = req.getHeader(constantes.HEADER_AUTHORIZATION);
         String username = null;
-        String authToken = null;
-        if (header != null && header.startsWith(Constantes.PREFIXO_TOKEN)) {
-            authToken = header.replace(Constantes.PREFIXO_TOKEN, "");
+        String token = null;
+
+        if (header != null && header.startsWith(constantes.PREFIXO_TOKEN)) {
+            token = header.replace(constantes.PREFIXO_TOKEN, "");
             try {
-                username = jwtTokenUtil.getUsernameFromToken(authToken);
+                username = jwtTokenUtil.getUsernameFromToken(token);
             } catch (IllegalArgumentException e) {
                 logger.error("Ocorreu um erro ao buscar o nome de usuário do token", e);
             } catch (ExpiredJwtException e) {
@@ -50,8 +54,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthenticationToken(authToken,
+            if (jwtTokenUtil.validateToken(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthenticationToken(token,
                         SecurityContextHolder.getContext().getAuthentication(), userDetails);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
 

@@ -18,18 +18,18 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class TokenHandler implements Serializable {
 
-    private final Logger log = LoggerFactory.getLogger(TokenHandler.class);
+    private final Constantes constantes = new Constantes();
 
     public UserPrincipal parseUserFromToken(String token) {
         Claims body = Jwts.parser()
-                .setSigningKey(Base64.getEncoder().encodeToString(Constantes.SENHA_TOKEN.getBytes()))
+                .setSigningKey(Base64.getEncoder().encodeToString(constantes.SENHA_TOKEN.getBytes()))
                 .parseClaimsJws(token)
                 .getBody();
         String username = body.getSubject();
 
-        List<String> roles = body.get("roles", List.class);
+        List<String> cargos = body.get("cargos", List.class);
 
-        return new UserPrincipal(username, roles);
+        return new UserPrincipal(username, cargos);
     }
 
     public String createTokenForUser(UserPrincipal user) {
@@ -39,14 +39,14 @@ public class TokenHandler implements Serializable {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .setExpiration(expirationDate)
-                .claim("roles", user.getAuthorities())
+                .claim("cargos", user.getAuthorities())
                 .signWith(SignatureAlgorithm.HS256,
-                        Base64.getEncoder().encodeToString(Constantes.SENHA_TOKEN.getBytes()))
+                        Base64.getEncoder().encodeToString(constantes.SENHA_TOKEN.getBytes()))
                 .compact();
     }
 
     private Date calculateExpirationDate(Date createdDate) {
-        return new Date(createdDate.getTime() + Constantes.EXPIRACAO_TOKEN);
+        return new Date(createdDate.getTime() + constantes.EXPIRACAO_TOKEN);
     }
 
 }

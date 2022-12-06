@@ -31,6 +31,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class TokenProvider implements Serializable {
 
+    private final Constantes constantes = new Constantes();
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -46,7 +48,7 @@ public class TokenProvider implements Serializable {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(Constantes.SENHA_TOKEN)
+                .setSigningKey(constantes.SENHA_TOKEN)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -63,10 +65,10 @@ public class TokenProvider implements Serializable {
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim(Constantes.CARGOS, authorities)
+                .claim(constantes.CARGOS, authorities)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + Constantes.EXPIRACAO_TOKEN * 1000))
-                .signWith(SignatureAlgorithm.HS256, Constantes.SENHA_TOKEN)
+                .setExpiration(new Date(System.currentTimeMillis() + constantes.EXPIRACAO_TOKEN * 1000))
+                .signWith(SignatureAlgorithm.HS256, constantes.SENHA_TOKEN)
                 .compact();
     }
 
@@ -78,14 +80,14 @@ public class TokenProvider implements Serializable {
     UsernamePasswordAuthenticationToken getAuthenticationToken(final String token, final Authentication existingAuth,
             final UserDetails userDetails) {
 
-        final JwtParser jwtParser = Jwts.parser().setSigningKey(Constantes.SENHA_TOKEN);
+        final JwtParser jwtParser = Jwts.parser().setSigningKey(constantes.SENHA_TOKEN);
 
         final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
         final Claims claims = claimsJws.getBody();
 
         final Collection<? extends GrantedAuthority> authorities = Arrays
-                .stream(claims.get(Constantes.CARGOS).toString().split(","))
+                .stream(claims.get(constantes.CARGOS).toString().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
@@ -104,7 +106,7 @@ public class TokenProvider implements Serializable {
      */
     public void addAuthentication(HttpServletResponse response, Authentication authentication) {
         final UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-        response.addHeader(Constantes.HEADER_AUTHORIZATION, tokenHandler.createTokenForUser(user));
+        response.addHeader(constantes.HEADER_AUTHORIZATION, tokenHandler.createTokenForUser(user));
     }
 
     /**
@@ -116,7 +118,7 @@ public class TokenProvider implements Serializable {
      * @return Objeto {@link Authentication} com as informações do usuário.
      */
     public Authentication getAuthentication(HttpServletRequest request) {
-        final String token = request.getHeader(Constantes.HEADER_AUTHORIZATION);
+        final String token = request.getHeader(constantes.HEADER_AUTHORIZATION);
 
         if (!token.isBlank()) {
             final UserPrincipal user = tokenHandler.parseUserFromToken(token);

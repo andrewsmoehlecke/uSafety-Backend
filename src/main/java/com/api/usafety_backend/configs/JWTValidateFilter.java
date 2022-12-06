@@ -35,6 +35,8 @@ public class JWTValidateFilter extends BasicAuthenticationFilter {
     @Autowired
     private TokenProvider tokenProvider;
 
+    private final Constantes constantes = new Constantes();
+
     private final Logger log = LoggerFactory.getLogger(JWTValidateFilter.class);
 
     public JWTValidateFilter(AuthenticationManager authenticationManager) {
@@ -55,8 +57,8 @@ public class JWTValidateFilter extends BasicAuthenticationFilter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Origin, x-requested-with, Authorization, Content-Type, "
-                + "withCredentials, " + Constantes.HEADER_AUTHORIZATION);
-        response.setHeader("Access-Control-Expose-Headers", Constantes.HEADER_AUTHORIZATION);
+                + "withCredentials, " + constantes.HEADER_AUTHORIZATION);
+        response.setHeader("Access-Control-Expose-Headers", constantes.HEADER_AUTHORIZATION);
         response.setHeader("p3p", "CP=\"This is not a P3P policy!\"");
 
         if (!httpRequest.getMethod().equals("OPTIONS")) {
@@ -82,24 +84,10 @@ public class JWTValidateFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, res);
         }
         SecurityContextHolder.getContext().setAuthentication(null);
-
-        // String atributo = request.getHeader(Constantes.HEADER_AUTHORIZATION);
-
-        // if (atributo == null || !atributo.startsWith(Constantes.PREFIXO_TOKEN)) {
-        // chain.doFilter(request, response);
-        // return;
-        // }
-
-        // String token = atributo.replace(Constantes.PREFIXO_TOKEN, "");
-
-        // UsernamePasswordAuthenticationToken authenticationToken =
-        // getAuthenticationToken(token);
-
-        // SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
-        String usuario = JWT.require(Algorithm.HMAC512(Constantes.SENHA_TOKEN))
+        String usuario = JWT.require(Algorithm.HMAC512(constantes.SENHA_TOKEN))
                 .build()
                 .verify(token)
                 .getSubject();

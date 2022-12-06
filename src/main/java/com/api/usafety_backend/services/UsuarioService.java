@@ -20,6 +20,8 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private final Constantes constantes = new Constantes();
+
     private final Logger log = LoggerFactory.getLogger(UsuarioService.class);
 
     private BCryptPasswordEncoder codificadorDeSenha() {
@@ -32,7 +34,7 @@ public class UsuarioService {
             if (u.getCargos().isEmpty() || u.getCargos() == null) {
                 u.addCargo(Usuario.Cargos.USUARIO);
             }
-            if (u.getUsername().equals(Constantes.ADMIN_USERNAME)) {
+            if (u.getUsername().equals(constantes.ADMIN_USERNAME)) {
                 u.addCargo(Usuario.Cargos.USUARIO);
                 u.addCargo(Usuario.Cargos.ADMIN);
             }
@@ -59,13 +61,13 @@ public class UsuarioService {
             if (usuarioRepository.findByUsername(u.getUsername()) != null) {
                 throw new UsuarioJaExistenteException("Usuario já existente.");
             }
-            if (!RegexValidador.validador(u.getEmail(), Constantes.REGEX_EMAIL)) {
+            if (!RegexValidador.validador(u.getEmail(), constantes.REGEX_EMAIL)) {
                 throw new EmailInvalidoException("Email invalido.");
             }
-            if (!RegexValidador.validador(u.getUsername(), Constantes.REGEX_USERNAME)) {
+            if (!RegexValidador.validador(u.getUsername(), constantes.REGEX_USERNAME)) {
                 throw new EmailInvalidoException("Username invalido.");
             }
-            if (!RegexValidador.validador(u.getFotoPerfil(), Constantes.REGEX_IMAGEM_URL)) {
+            if (!RegexValidador.validador(u.getFotoPerfil(), constantes.REGEX_IMAGEM_URL)) {
                 throw new EmailInvalidoException("URL da imagem invalida.");
             }
             if (u.getNomeCompleto() == null || u.getNomeCompleto().isEmpty()) {

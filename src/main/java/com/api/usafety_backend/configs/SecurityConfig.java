@@ -31,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UnauthorizedEntryPoint unauthorizedEntryPoint;
 
+    // constantes
+    private final Constantes constantes = new Constantes();
+
     private BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -53,8 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuario/criar").permitAll()
-                .antMatchers(HttpMethod.GET, "/teste").hasAnyRole(Constantes.CARGO_ADMIN)
+                .antMatchers(HttpMethod.GET, "/usuario/teste").hasAnyRole(constantes.CARGO_ADMIN)
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint);

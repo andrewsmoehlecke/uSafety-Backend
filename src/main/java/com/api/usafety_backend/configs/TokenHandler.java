@@ -25,9 +25,10 @@ public class TokenHandler implements Serializable {
                 .setSigningKey(Base64.getEncoder().encodeToString(constantes.SENHA_TOKEN.getBytes()))
                 .parseClaimsJws(token)
                 .getBody();
+
         String username = body.getSubject();
 
-        List<String> cargos = body.get("cargos", List.class);
+        List<String> cargos = body.get("roles", List.class);
 
         return new UserPrincipal(username, cargos);
     }
@@ -39,14 +40,14 @@ public class TokenHandler implements Serializable {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .setExpiration(expirationDate)
-                .claim("cargos", user.getAuthorities())
+                .claim("roles", user.getAuthorities())
                 .signWith(SignatureAlgorithm.HS256,
                         Base64.getEncoder().encodeToString(constantes.SENHA_TOKEN.getBytes()))
                 .compact();
     }
 
     private Date calculateExpirationDate(Date createdDate) {
-        return new Date(createdDate.getTime() + constantes.EXPIRACAO_TOKEN);
+        return new Date(createdDate.getTime() + constantes.EXPIRACAO_TOKEN * 1000);
     }
 
 }

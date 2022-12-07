@@ -1,6 +1,7 @@
 package com.api.usafety_backend.configs;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class TokenProvider implements Serializable {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(constantes.SENHA_TOKEN)
+                .setSigningKey(constantes.SENHA_TOKEN.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -80,18 +81,7 @@ public class TokenProvider implements Serializable {
     UsernamePasswordAuthenticationToken getAuthenticationToken(final String token, final Authentication existingAuth,
             final UserDetails userDetails) {
 
-        final JwtParser jwtParser = Jwts.parser().setSigningKey(constantes.SENHA_TOKEN);
-
-        final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
-
-        final Claims claims = claimsJws.getBody();
-
-        final Collection<? extends GrantedAuthority> authorities = Arrays
-                .stream(claims.get(constantes.CARGOS).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", new ArrayList<>());
     }
 
     @Autowired

@@ -1,5 +1,7 @@
 package com.api.usafety_backend.controllers;
 
+import java.security.Principal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/teste")
-    public ResponseEntity<String> teste() {
+    public ResponseEntity<String> teste(Principal principal) {
+        log.info("GET /usuario/teste");
+        log.info("Usuário: " + principal.getName());
         return ResponseEntity.ok("Teste");
     }
 }

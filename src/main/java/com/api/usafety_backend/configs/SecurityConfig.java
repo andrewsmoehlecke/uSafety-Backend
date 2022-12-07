@@ -1,5 +1,7 @@
 package com.api.usafety_backend.configs;
 
+import javax.annotation.security.PermitAll;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuario/criar").permitAll()
-                .antMatchers(HttpMethod.GET, "/usuario/teste").hasAnyRole(constantes.CARGO_ADMIN)
+                .antMatchers(HttpMethod.GET, "/usuario/teste").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint);

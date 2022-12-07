@@ -10,6 +10,7 @@ public class Constantes {
     public final String HEADER_AUTHORIZATION = "Authorization";
     public final String PREFIXO_TOKEN = "Bearer ";
     public final String CARGOS = "ADMIN,USUARIO";
+    public final String CARGOS_KEY = "roles";
 
     /*
      * Constantes para validação com regex

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.dtos.TokenDto;
 import com.api.usafety_backend.entities.dtos.UsuarioDto;
 import com.api.usafety_backend.services.UsuarioService;
 
@@ -26,21 +27,19 @@ public class UsuarioController {
     private final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @PostMapping("/criar")
-    public ResponseEntity<Void> criarUsuario(@RequestBody UsuarioDto usuarioDto) {
+    public ResponseEntity<TokenDto> criarUsuario(@RequestBody UsuarioDto usuarioDto) {
         log.info("POST /usuario/criar");
         log.info("Criando usuário " + usuarioDto.getUsername());
 
-        Usuario u = new Usuario(usuarioDto);
+        TokenDto token = usuarioService.criar(new Usuario(usuarioDto));
 
-        usuarioService.salvar(u);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(token);
     }
 
-    @GetMapping("/teste")
-    public ResponseEntity<String> teste(Principal principal) {
-        log.info("GET /usuario/teste");
-        log.info("Usuário: " + principal.getName());
+    @GetMapping("/listarUsuarios")
+    public ResponseEntity<String> listarUsuarios(Principal principal) {
+        log.info("GET /usuario/listarUsuarios");
+
         return ResponseEntity.ok("Teste");
     }
 }

@@ -68,7 +68,8 @@ public class TokenProvider implements Serializable {
                 .setSubject(authentication.getName())
                 .claim(constantes.CARGOS, authorities)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + constantes.EXPIRACAO_TOKEN * 1000))
+                // Expiração deve ser melhorada
+                .setExpiration(new Date(System.currentTimeMillis() + constantes.EXPIRACAO_TOKEN ^ 6))
                 .signWith(SignatureAlgorithm.HS256, constantes.SENHA_TOKEN)
                 .compact();
     }

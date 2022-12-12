@@ -1,11 +1,13 @@
 package com.api.usafety_backend.util;
 
+import java.math.BigInteger;
+
 public class Constantes {
 
     /*
      * Constantes para as configurações de seguirança
      */
-    public final int EXPIRACAO_TOKEN = 600000;
+    public final long EXPIRACAO_TOKEN = 600000000;
     public final String SENHA_TOKEN = "9eb64b26-e6f0-4c3b-a164-893512b6ec15";
     public final String HEADER_AUTHORIZATION = "Authorization";
     public final String PREFIXO_TOKEN = "Bearer ";

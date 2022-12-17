@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.api.usafety_backend.entities.Usuario;
 
+import lombok.ToString;
+
+@ToString
 public class UserPrincipal implements UserDetails {
 
     private String username;
@@ -18,6 +21,8 @@ public class UserPrincipal implements UserDetails {
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
+
+    private List<String> cargos;
 
     private boolean enable;
 
@@ -27,6 +32,8 @@ public class UserPrincipal implements UserDetails {
         this.username = u.getUsername();
         this.password = u.getSenha();
         this.enable = u.isAtivo();
+
+        this.cargos = u.getCargosString();
 
         authorities = u.getCargos().stream().map(cargo -> {
             return new SimpleGrantedAuthority("ROLE_".concat(cargo.getCargo()));
@@ -41,6 +48,8 @@ public class UserPrincipal implements UserDetails {
         this.username = username;
         this.password = null;
         this.enable = true;
+
+        this.cargos = cargos;
 
         authorities = cargos.stream().map(cargo -> {
             return new SimpleGrantedAuthority("ROLE_".concat(cargo));

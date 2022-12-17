@@ -1,5 +1,10 @@
 package com.api.usafety_backend.entities.dtos;
 
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
 public class ErroDto {
     private String error;
 

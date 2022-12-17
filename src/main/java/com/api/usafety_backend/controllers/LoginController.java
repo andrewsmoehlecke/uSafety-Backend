@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.usafety_backend.configs.UserPrincipal;
 import com.api.usafety_backend.entities.dtos.ErroDto;
 import com.api.usafety_backend.entities.dtos.LoginUsuarioDto;
 import com.api.usafety_backend.entities.dtos.TokenDto;
@@ -32,8 +31,7 @@ public class LoginController {
     Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping
-    public ResponseEntity createAuthenticationToken(@RequestBody LoginUsuarioDto usuario)
-            throws Exception {
+    public ResponseEntity createAuthenticationToken(@RequestBody LoginUsuarioDto usuario) {
         log.info("POST /login");
         log.info("Usuario: " + usuario.getUsername());
 

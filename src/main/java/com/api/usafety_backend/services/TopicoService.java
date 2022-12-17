@@ -1,9 +1,18 @@
 package com.api.usafety_backend.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.usafety_backend.entities.Topico;
+import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.dtos.TopicoFullDto;
 import com.api.usafety_backend.repositories.TopicoRepository;
 
 @Service
@@ -12,7 +21,56 @@ public class TopicoService {
     @Autowired
     private TopicoRepository topicoRepository;
 
-    public void save(Topico topico) {
+    private ModelMapper mapper = new ModelMapper();
+
+    Logger log = LoggerFactory.getLogger(TopicoService.class);
+
+    public void salvar(Topico topico) {
         topicoRepository.save(topico);
+    }
+
+    public void salvar(TopicoFullDto topicoDto) {
+        topicoRepository.save(new Topico(topicoDto));
+    }
+
+    public void deletar(Long idTopico, Usuario usuario) {
+        log.info("Usuario " + usuario.getUsername() + " está deletando o tópico " + topico.getId());
+
+        Topico topico = topicoRepository.findById(idTopico).get();
+
+        if (topico.getAutor() == usuario || usuario.isAdmin()) {
+            topicoRepository.deleteById(idTopico);
+        } else {
+            log.error("Usuario " + usuario.getUsername() + " não tem permissão para deletar o tópico "
+                    + topico.getId());
+        }
+    }
+
+    public Topico buscarPorId(Long id) {
+        return topicoRepository.findById(id).get();
+    }
+
+    public List<TopicoFullDto> buscarTodos() {
+        List<Topico> topicos = topicoRepository.findAll();
+
+        if (!topicos.isEmpty()) {
+            return topicos.stream().map(topico -> mapper.map(topico, TopicoFullDto.class))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<TopicoFullDto>();
+        }
+    }
+
+    public void editar(TopicoFullDto topicoDto, Usuario usuario) {
+        log.info("Usuario " + usuario.getUsername() + " está editando o tópico " + topicoDto.getId());
+
+        Topico topico = new Topico(topicoDto);
+
+        if (topico.getAutor().getId() == usuario.getId() || usuario.isAdmin()) {
+            topicoRepository.save(topico);
+        } else {
+            log.error("Usuario " + usuario.getUsername() + " não tem permissão para editar o tópico "
+                    + topicoDto.getId());
+        }
     }
 }

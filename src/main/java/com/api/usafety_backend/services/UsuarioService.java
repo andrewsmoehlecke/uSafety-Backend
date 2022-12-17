@@ -1,6 +1,8 @@
 package com.api.usafety_backend.services;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import com.api.usafety_backend.configs.UserPrincipal;
 import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.dtos.LoginUsuarioDto;
 import com.api.usafety_backend.entities.dtos.TokenDto;
+import com.api.usafety_backend.entities.dtos.UsuarioDto;
 import com.api.usafety_backend.exceptions.CamposObrigatoriosNaoPreenchidosException;
 import com.api.usafety_backend.exceptions.EmailInvalidoException;
 import com.api.usafety_backend.exceptions.ErroAoAutenticarUsuarioException;
@@ -57,9 +60,8 @@ public class UsuarioService {
         try {
             if (validarUsuario(u)) {
 
-                if (u.getCargos().isEmpty() || u.getCargos() == null) {
-                    u.addCargo(Usuario.Cargos.USUARIO);
-                }
+                u.limparCargos();
+                u.addCargo(Usuario.Cargos.USUARIO);
 
                 if (u.getUsername().equals(constantes.ADMIN_USERNAME)) {
                     u.addCargo(Usuario.Cargos.USUARIO);
@@ -85,8 +87,27 @@ public class UsuarioService {
 
     public void atualizar(Usuario u) {
         if (validarUsuario(u)) {
+            u.limparCargos();
+            u.addCargo(Usuario.Cargos.USUARIO);
+
             usuarioRepository.save(u);
         }
+    }
+
+    public void deletar(Usuario u) {
+        usuarioRepository.delete(u);
+    }
+
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
+    public Usuario buscarPorUsername(String username) {
+        return usuarioRepository.findByUsername(username);
+    }
+
+    public List<UsuarioDto> buscarTodosUsuariosDto() {
+        return usuarioRepository.findAll().stream().map(UsuarioDto::new).collect(Collectors.toList());
     }
 
     /*
@@ -124,11 +145,6 @@ public class UsuarioService {
             throw new CamposObrigatoriosNaoPreenchidosException(
                     "Usuário não possui todos os campos obrigatórios preenchidos.");
         }
-    }
-
-    public Usuario buscarPorUsername(String username) {
-        log.debug(usuarioRepository.findByUsername(username).toString());
-        return usuarioRepository.findByUsername(username);
     }
 
     /*

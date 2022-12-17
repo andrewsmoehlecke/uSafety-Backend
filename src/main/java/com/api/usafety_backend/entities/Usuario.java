@@ -111,10 +111,17 @@ public class Usuario {
         cargos.add(c);
     }
 
+    public void limparCargos() {
+        cargos.clear();
+    }
+
     public List<SimpleGrantedAuthority> getAuthorities() {
         return cargos.stream().map(cargo -> {
             return new SimpleGrantedAuthority("ROLE_".concat(cargo.getCargo()));
         }).collect(Collectors.toList());
     }
 
+    public boolean isAdmin() {
+        return hasCargo(Cargos.ADMIN);
+    }
 }

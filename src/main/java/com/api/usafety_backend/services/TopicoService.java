@@ -14,6 +14,7 @@ import com.api.usafety_backend.entities.Topico;
 import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
 import com.api.usafety_backend.repositories.TopicoRepository;
+import com.api.usafety_backend.util.Constantes;
 
 @Service
 public class TopicoService {
@@ -22,6 +23,8 @@ public class TopicoService {
     private TopicoRepository topicoRepository;
 
     private ModelMapper mapper = new ModelMapper();
+
+    private Constantes constantes = new Constantes();
 
     Logger log = LoggerFactory.getLogger(TopicoService.class);
 
@@ -34,14 +37,14 @@ public class TopicoService {
     }
 
     public void deletar(Long idTopico, Usuario usuario) {
-        log.info("Usuario " + usuario.getUsername() + " está deletando o tópico " + topico.getId());
+        log.info("Usuario " + usuario.getUsername() + " está deletando o tópico " + idTopico);
 
         Topico topico = topicoRepository.findById(idTopico).get();
 
         if (topico.getAutor() == usuario || usuario.isAdmin()) {
             topicoRepository.deleteById(idTopico);
         } else {
-            log.error("Usuario " + usuario.getUsername() + " não tem permissão para deletar o tópico "
+            log.warn("Usuario " + usuario.getUsername() + " não tem permissão para deletar o tópico "
                     + topico.getId());
         }
     }
@@ -50,8 +53,8 @@ public class TopicoService {
         return topicoRepository.findById(id).get();
     }
 
-    public List<TopicoFullDto> buscarTodos() {
-        List<Topico> topicos = topicoRepository.findAll();
+    public List<TopicoFullDto> buscarTopicosPorTipo(String tipo) {
+        List<Topico> topicos = topicoRepository.findAllByTipoDeTopico(tipo);
 
         if (!topicos.isEmpty()) {
             return topicos.stream().map(topico -> mapper.map(topico, TopicoFullDto.class))
@@ -69,7 +72,7 @@ public class TopicoService {
         if (topico.getAutor().getId() == usuario.getId() || usuario.isAdmin()) {
             topicoRepository.save(topico);
         } else {
-            log.error("Usuario " + usuario.getUsername() + " não tem permissão para editar o tópico "
+            log.warn("Usuario " + usuario.getUsername() + " não tem permissão para editar o tópico "
                     + topicoDto.getId());
         }
     }

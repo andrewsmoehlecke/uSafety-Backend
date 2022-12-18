@@ -52,12 +52,21 @@ public class UsuarioController {
 
     @PutMapping("/atualizar")
     public ResponseEntity<Void> atualizarUsuario(
+            Principal principal,
             @RequestBody UsuarioDto usuarioDto) {
         log.info("POST /usuario/atualizar");
 
-        usuarioService.atualizar(new Usuario(usuarioDto));
+        try {
+            Usuario editor = usuarioService.buscarPorUsername(principal.getName());
 
-        return ResponseEntity.ok().build();
+            usuarioService.atualizar(new Usuario(usuarioDto), editor);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("Erro ao atualizar usuário", e);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/listarUsuarios")
@@ -69,7 +78,7 @@ public class UsuarioController {
         Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
 
         if (!usuario.hasCargo(Usuario.Cargos.ADMIN)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         return ResponseEntity.ok(usuarioService.buscarTodosUsuariosDto());

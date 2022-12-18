@@ -85,10 +85,14 @@ public class UsuarioService {
         }
     }
 
-    public void atualizar(Usuario u) {
-        if (validarUsuario(u)) {
-            u.limparCargos();
-            u.addCargo(Usuario.Cargos.USUARIO);
+    public void atualizar(Usuario u, Usuario editor) {
+        if (u.equals(editor) || editor.isAdmin() && validarUsuario(u)) {
+
+            /* Para usuarios não adicionarem o cargo de admin ao atualizar */
+            if (!editor.isAdmin()) {
+                u.limparCargos();
+                u.addCargo(Usuario.Cargos.USUARIO);
+            }
 
             usuarioRepository.save(u);
         }

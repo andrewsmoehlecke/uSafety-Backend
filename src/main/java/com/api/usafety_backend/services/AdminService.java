@@ -26,7 +26,7 @@ public class AdminService {
         } catch (Exception e) {
             log.error("Erro ao criar o usuario " + usuario.getUsername(), e);
 
-            throw new RuntimeException("Erro ao criar o usuario " + u.getUsername());
+            throw new RuntimeException("Erro ao criar o usuario " + usuario.getUsername());
         }
     }
 

@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
 import com.api.usafety_backend.services.TopicoService;
 import com.api.usafety_backend.services.UsuarioService;
+import com.api.usafety_backend.util.Constantes;
 
 @RestController
 @RequestMapping("/topico")
@@ -32,7 +34,7 @@ public class TopicoController {
     @Autowired
     private UsuarioService usuarioService;
 
-    private ModelMapper mapper = new ModelMapper();
+    private Constantes constantes = new Constantes();
 
     Logger log = LoggerFactory.getLogger(TopicoController.class);
 
@@ -46,10 +48,10 @@ public class TopicoController {
         try {
             topicoService.salvar(topicoDto);
 
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             log.error("Erro ao criar tópico.", e);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -67,7 +69,7 @@ public class TopicoController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error("Erro ao editar tópico.", e);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -85,21 +87,35 @@ public class TopicoController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error("Erro ao deletar tópico.", e);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GetMapping("/listarTopicos")
-    public ResponseEntity<List<TopicoFullDto>> listarTopicos(
+    @GetMapping("/buscarTodasDuvidas")
+    public ResponseEntity<List<TopicoFullDto>> buscarTodasDuvidas(
             UserPrincipal principal) {
-        log.info("GET /topico/listarTopicos");
+        log.info("GET /topico/buscarTodasDuvidas");
         log.info("Usuario " + principal.getUsername());
 
         try {
-            return ResponseEntity.ok(topicoService.buscarTodos());
+            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(constantes.TOPICO_DUVIDA));
         } catch (Exception e) {
             log.error("Erro ao listar tópicos.", e);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/buscarTodasDiscussoes")
+    public ResponseEntity<List<TopicoFullDto>> buscarTodasDiscussoes(
+            UserPrincipal principal) {
+        log.info("GET /topico/buscarTodasDiscussoes");
+        log.info("Usuario " + principal.getUsername());
+
+        try {
+            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(constantes.TOPICO_DISCUSSAO));
+        } catch (Exception e) {
+            log.error("Erro ao listar tópicos.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -114,7 +130,7 @@ public class TopicoController {
             return ResponseEntity.ok(new TopicoFullDto(topicoService.buscarPorId(id)));
         } catch (Exception e) {
             log.error("Erro ao buscar tópico por id.", e);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

@@ -59,7 +59,7 @@ public class Topico {
     private Tipos tipoDeTopico;
 
     public enum Tipos {
-        DUVIDA("DUVIDA"), FORUM("FORUM");
+        DUVIDA("DUVIDA"), DISCUSSAO("DISCUSSAO");
 
         private final String tipo;
 

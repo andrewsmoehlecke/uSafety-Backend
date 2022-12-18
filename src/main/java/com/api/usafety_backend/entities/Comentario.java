@@ -10,11 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.api.usafety_backend.entities.dtos.ComentarioFullDto;
+import com.api.usafety_backend.entities.dtos.CriarComentarioDto;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 public class Comentario {
 
@@ -27,8 +32,13 @@ public class Comentario {
 
     private LocalDateTime horaPublicacao;
 
+    private LocalDateTime ultimaEdicao;
+
     @Column(columnDefinition = "boolean default true")
     private boolean visivel = true;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean editado = true;
 
     @ManyToOne()
     @JoinColumn(name = "id_usuario")
@@ -37,4 +47,14 @@ public class Comentario {
     @ManyToOne()
     @JoinColumn(name = "id_topico")
     private Topico topico;
+
+    public Comentario(ComentarioFullDto dto) {
+        this.id = dto.getId();
+        this.conteudo = dto.getConteudo();
+        this.horaPublicacao = dto.getHoraPublicacao();
+        this.visivel = dto.isVisivel();
+        this.editado = dto.isEditado();
+        this.autor = new Usuario(dto.getAutor());
+        this.topico = new Topico(dto.getTopico());
+    }
 }

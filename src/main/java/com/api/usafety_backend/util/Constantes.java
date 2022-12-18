@@ -40,4 +40,9 @@ public class Constantes {
     public final String USUARIO_DESABILITADO = "usuarioDesabilitado";
     public final String SENHA_INCORRETA = "senhaIncorreta";
 
+    /*
+     * Tipos de tópicos
+     */
+    public final String TOPICO_DUVIDA = "DUVIDA";
+    public final String TOPICO_DISCUSSAO = "DISCUSSAO";
 }

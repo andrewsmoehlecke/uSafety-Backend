@@ -1,7 +1,5 @@
 package com.api.usafety_backend.util;
 
-import java.math.BigInteger;
-
 public class Constantes {
 
     /*
@@ -45,4 +43,10 @@ public class Constantes {
      */
     public final String TOPICO_DUVIDA = "DUVIDA";
     public final String TOPICO_DISCUSSAO = "DISCUSSAO";
+
+    /*
+     * Email do sistema
+     */
+    public final String EMAIL = "usafetyproject@gmail.com";
+    public final String SENHA_EMAIL = "uS4f3tyPr0j3ct";
 }

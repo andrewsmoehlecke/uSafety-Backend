@@ -58,6 +58,9 @@ public class Usuario {
     @Column(columnDefinition = "boolean default true")
     private boolean ativo = true;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public String codigoRecuperacao;
+
     @OneToMany(mappedBy = "autor")
     private List<Topico> topicos;
 

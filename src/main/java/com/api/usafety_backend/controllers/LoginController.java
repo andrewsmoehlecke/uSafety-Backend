@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.dtos.ErroDto;
@@ -60,4 +61,13 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/recuperarAcesso")
+    public ResponseEntity<Void> recuperarAcesso(@RequestParam("username") String username) {
+        log.info("POST /login/recuperarAcesso");
+        log.info("Usuario: " + username);
+
+        usuarioService.gerarCodigoDeRecuperacao(username);
+
+        return ResponseEntity.ok().build();
+    }
 }

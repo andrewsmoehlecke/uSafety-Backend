@@ -3,7 +3,7 @@ package com.api.usafety_backend.util;
 public class Constantes {
 
     /*
-     * Constantes para as configurações de seguirança
+     * Configurações de seguirança
      */
     public final long EXPIRACAO_TOKEN = 600000000;
     public final String SENHA_TOKEN = "9eb64b26-e6f0-4c3b-a164-893512b6ec15";
@@ -13,7 +13,7 @@ public class Constantes {
     public final String CARGOS_KEY = "roles";
 
     /*
-     * Constantes para validação com regex
+     * Validação com regex
      */
     public final String REGEX_EMAIL = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
@@ -45,8 +45,13 @@ public class Constantes {
     public final String TOPICO_DISCUSSAO = "DISCUSSAO";
 
     /*
+     * Serviço de email
+     */
+    public final String ASSUNTO_RECUPERACAO_CONTA = "Recuperação de conta";
+
+    /*
      * Email do sistema
      */
-    public final String EMAIL = "usafetyproject@gmail.com";
-    public final String SENHA_EMAIL = "uS4f3tyPr0j3ct";
+    public final String EMAIL = "andrewsmoehlcke@gmail.com";
+    public final String SENHA_EMAIL = "1234567890acm";
 }

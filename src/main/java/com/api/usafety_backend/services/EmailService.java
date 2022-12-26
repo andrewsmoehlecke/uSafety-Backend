@@ -31,13 +31,15 @@ public class EmailService {
 
         /** Parâmetros de conexão com servidor Gmail */
         props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.starttls.enabled", "false");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-        Session session = Session.getDefaultInstance(props,
+        Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(constantes.EMAIL, constantes.SENHA_EMAIL);
@@ -45,7 +47,7 @@ public class EmailService {
                 });
 
         /** Ativa Debug para sessão */
-        // session.setDebug(true);
+        session.setDebug(true);
 
         try {
 

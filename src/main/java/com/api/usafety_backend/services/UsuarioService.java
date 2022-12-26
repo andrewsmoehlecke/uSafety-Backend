@@ -2,6 +2,7 @@ package com.api.usafety_backend.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class UsuarioService {
 
     @Autowired
     private TokenHandler tokenHandler;
+
+    @Autowired
+    private EmailService emailService;
 
     private final Constantes constantes = new Constantes();
 
@@ -206,6 +210,31 @@ public class UsuarioService {
             log.error("Credednciais invalidas. Username: " + username + "; Senha " + senha, e);
             throw new UsuarioDesabilitadoException(
                     "Credednciais invalidas. Username: " + username + "; Senha " + senha);
+        }
+    }
+
+    public void gerarCodigoDeRecuperacao(String username) {
+        log.info("Gerando codigo de recuperacao para o usuario " + username);
+
+        try {
+            Usuario u = usuarioRepository.findByUsername(username);
+
+            Random rnd = new Random();
+            int number = rnd.nextInt(999999);
+            String codigo = String.format("%06d", number);
+
+            u.setCodigoRecuperacao(codigo);
+
+            usuarioRepository.save(u);
+
+            String corpoEmail = codigo;
+
+            emailService.enviarEmail(
+                    u.getEmail(),
+                    constantes.ASSUNTO_RECUPERACAO_CONTA,
+                    corpoEmail);
+        } catch (Exception e) {
+            log.error("Erro ao gerar codigo de recuperacao", e);
         }
     }
 }

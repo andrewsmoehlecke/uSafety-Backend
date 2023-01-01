@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.configs.UserPrincipal;
-import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.Topico.Tipos;
+import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
+import com.api.usafety_backend.exceptions.UsuarioNaoAutorizadoException;
 import com.api.usafety_backend.services.TopicoService;
 import com.api.usafety_backend.services.UsuarioService;
 import com.api.usafety_backend.util.Constantes;
@@ -46,9 +47,11 @@ public class TopicoController {
         log.info("Usuario " + principal.getUsername());
 
         try {
-            topicoService.salvar(topicoDto, Tipos.CONTEUDO);
+            topicoService.salvar(topicoDto, Tipos.CONTEUDO, principal.getUsername());
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (UsuarioNaoAutorizadoException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (Exception e) {
             log.error("Erro ao criar tópico.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

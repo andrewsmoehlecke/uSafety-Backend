@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.usafety_backend.entities.Topico;
-import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.Topico.Tipos;
+import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
+import com.api.usafety_backend.exceptions.UsuarioNaoAutorizadoException;
 import com.api.usafety_backend.repositories.TopicoRepository;
 import com.api.usafety_backend.util.Constantes;
 
@@ -22,6 +23,9 @@ public class TopicoService {
 
     @Autowired
     private TopicoRepository topicoRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     private ModelMapper mapper = new ModelMapper();
 
@@ -35,6 +39,17 @@ public class TopicoService {
 
     public void salvar(TopicoFullDto topicoDto, Topico.Tipos tipo) {
         topicoRepository.save(new Topico(topicoDto, tipo));
+    }
+
+    public void salvar(TopicoFullDto topicoDto, Topico.Tipos tipo, String username) {
+        Usuario usuario = username != null ? usuarioService.buscarPorUsername(username) : new Usuario();
+
+        if (usuario.isAdmin()) {
+            topicoRepository.save(new Topico(topicoDto, tipo));
+        } else {
+            log.warn("Usuario " + username + " não autorizado a criar tópico de conteúdo");
+            throw new UsuarioNaoAutorizadoException("Usuario não autorizado a criar tópico de conteúdo");
+        }
     }
 
     public void deletar(Long idTopico, Usuario usuario) {

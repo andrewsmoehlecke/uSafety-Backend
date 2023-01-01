@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.usafety_backend.entities.Topico;
 import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.Topico.Tipos;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
 import com.api.usafety_backend.repositories.TopicoRepository;
 import com.api.usafety_backend.util.Constantes;
@@ -32,8 +33,8 @@ public class TopicoService {
         topicoRepository.save(topico);
     }
 
-    public void salvar(TopicoFullDto topicoDto) {
-        topicoRepository.save(new Topico(topicoDto));
+    public void salvar(TopicoFullDto topicoDto, Topico.Tipos tipo) {
+        topicoRepository.save(new Topico(topicoDto, tipo));
     }
 
     public void deletar(Long idTopico, Usuario usuario) {
@@ -53,7 +54,7 @@ public class TopicoService {
         return topicoRepository.findById(id).get();
     }
 
-    public List<TopicoFullDto> buscarTopicosPorTipo(String tipo) {
+    public List<TopicoFullDto> buscarTopicosPorTipo(Tipos tipo) {
         List<Topico> topicos = topicoRepository.findAllByTipoDeTopico(tipo);
 
         if (!topicos.isEmpty()) {

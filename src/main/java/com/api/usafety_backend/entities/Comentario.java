@@ -11,15 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.api.usafety_backend.entities.dtos.ComentarioFullDto;
-import com.api.usafety_backend.entities.dtos.CriarComentarioDto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
-@ToString
 @NoArgsConstructor
 public class Comentario {
 

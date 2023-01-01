@@ -11,8 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.api.usafety_backend.entities.Usuario;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Data
+@NoArgsConstructor
 @ToString
 public class UserPrincipal implements UserDetails {
 

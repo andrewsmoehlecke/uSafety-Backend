@@ -20,6 +20,8 @@ public class TopicoFullDto {
 
     private LocalDateTime horaPublicacao;
 
+    private LocalDateTime horaEdicao;
+
     private String imagem;
 
     private boolean anonimo;

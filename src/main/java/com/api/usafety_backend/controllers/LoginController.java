@@ -32,7 +32,7 @@ public class LoginController {
     Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping
-    public ResponseEntity createAuthenticationToken(@RequestBody LoginUsuarioDto usuario) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginUsuarioDto usuario) {
         log.info("POST /login");
         log.info("Usuario: " + usuario.getUsername());
 

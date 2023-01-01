@@ -41,6 +41,9 @@ public class Topico {
     @Column(nullable = false)
     private LocalDateTime horaPublicacao;
 
+    @Column
+    private LocalDateTime horaEdicao;
+
     private String imagem;
 
     @Column(columnDefinition = "boolean default false")
@@ -59,7 +62,7 @@ public class Topico {
     private Tipos tipoDeTopico;
 
     public enum Tipos {
-        DUVIDA("DUVIDA"), DISCUSSAO("DISCUSSAO");
+        DUVIDA("DUVIDA"), DISCUSSAO("DISCUSSAO"), CONTEUDO("CONTEUDO");
 
         private final String tipo;
 
@@ -80,5 +83,16 @@ public class Topico {
         this.imagem = topicoDto.getImagem();
         this.anonimo = topicoDto.isAnonimo();
         this.autor = new Usuario(topicoDto.getAutor());
+    }
+
+    public Topico(TopicoFullDto topicoDto, Tipos tipoDeTopico) {
+        this.id = topicoDto.getId();
+        this.titulo = topicoDto.getTitulo();
+        this.conteudo = topicoDto.getConteudo();
+        this.horaPublicacao = topicoDto.getHoraPublicacao();
+        this.imagem = topicoDto.getImagem();
+        this.anonimo = topicoDto.isAnonimo();
+        this.autor = new Usuario(topicoDto.getAutor());
+        this.tipoDeTopico = tipoDeTopico;
     }
 }

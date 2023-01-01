@@ -122,6 +122,7 @@ public class UsuarioService {
      * Validando os campos do usuário
      */
     public boolean validarUsuario(Usuario u) {
+        log.info(u.toString());
         try {
             log.info("Validando o usuario " + u.getUsername());
 
@@ -134,7 +135,8 @@ public class UsuarioService {
             if (!RegexValidador.validador(u.getUsername(), constantes.REGEX_USERNAME)) {
                 throw new EmailInvalidoException("Username invalido.");
             }
-            if (!RegexValidador.validador(u.getFotoPerfil(), constantes.REGEX_IMAGEM_URL)) {
+            if (u.getFotoPerfil() != null
+                    && !RegexValidador.validador(u.getFotoPerfil(), constantes.REGEX_IMAGEM_URL)) {
                 throw new EmailInvalidoException("URL da imagem invalida.");
             }
             if (u.getNomeCompleto() == null || u.getNomeCompleto().isEmpty()) {
@@ -145,9 +147,7 @@ public class UsuarioService {
             }
 
             return true;
-        } catch (
-
-        NullPointerException e) {
+        } catch (NullPointerException e) {
             log.error("Usuário não possui todos os campos obrigatórios preenchidos.", e);
 
             throw new CamposObrigatoriosNaoPreenchidosException(

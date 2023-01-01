@@ -15,8 +15,7 @@ public class Constantes {
     /*
      * Validação com regex
      */
-    public final String REGEX_EMAIL = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+    public final String REGEX_EMAIL = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     public final String REGEX_USERNAME = "^[a-zA-Z0-9_-]{3,15}$";
     public final String REGEX_IMAGEM_URL = "^(http(s?):)([/|.\\w\\s-])*\\.(?:jpg|gif|png)$";
 
@@ -43,6 +42,7 @@ public class Constantes {
      */
     public final String TOPICO_DUVIDA = "DUVIDA";
     public final String TOPICO_DISCUSSAO = "DISCUSSAO";
+    public final String TOPICO_CONTEUDO = "CONTEUDO";
 
     /*
      * Serviço de email

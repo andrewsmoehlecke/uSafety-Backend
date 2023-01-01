@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.configs.UserPrincipal;
 import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.Topico.Tipos;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
 import com.api.usafety_backend.services.TopicoService;
 import com.api.usafety_backend.services.UsuarioService;
@@ -37,15 +38,49 @@ public class TopicoController {
 
     Logger log = LoggerFactory.getLogger(TopicoController.class);
 
-    @PostMapping("/criar")
-    public ResponseEntity<Void> criarTopico(
+    @PostMapping("/criarConteudo")
+    public ResponseEntity<Void> criarConteudo(
             UserPrincipal principal,
             @RequestBody TopicoFullDto topicoDto) {
-        log.info("POST /topico/criar");
+        log.info("POST /topico/criarConteudo");
         log.info("Usuario " + principal.getUsername());
 
         try {
-            topicoService.salvar(topicoDto);
+            topicoService.salvar(topicoDto, Tipos.CONTEUDO);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            log.error("Erro ao criar tópico.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/criarDuvida")
+    public ResponseEntity<Void> criarDuvida(
+            UserPrincipal principal,
+            @RequestBody TopicoFullDto topicoDto) {
+        log.info("POST /topico/criarDuvida");
+        log.info("Usuario " + principal.getUsername());
+
+        try {
+            topicoService.salvar(topicoDto, Tipos.DUVIDA);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            log.error("Erro ao criar tópico.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/criarDiscussao")
+    public ResponseEntity<Void> criarDiscussao(
+            UserPrincipal principal,
+            @RequestBody TopicoFullDto topicoDto) {
+        log.info("POST /topico/criarDiscussao");
+        log.info("Usuario " + principal.getUsername());
+
+        try {
+            topicoService.salvar(topicoDto, Tipos.DISCUSSAO);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
@@ -97,7 +132,7 @@ public class TopicoController {
         log.info("Usuario " + principal.getUsername());
 
         try {
-            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(constantes.TOPICO_DUVIDA));
+            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(Tipos.DUVIDA));
         } catch (Exception e) {
             log.error("Erro ao listar tópicos.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -111,7 +146,21 @@ public class TopicoController {
         log.info("Usuario " + principal.getUsername());
 
         try {
-            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(constantes.TOPICO_DISCUSSAO));
+            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(Tipos.DISCUSSAO));
+        } catch (Exception e) {
+            log.error("Erro ao listar tópicos.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/buscarTodoConteudo")
+    public ResponseEntity<List<TopicoFullDto>> buscarTodoConteudo(
+            UserPrincipal principal) {
+        log.info("GET /topico/buscarTodoConteudo");
+        log.info("Usuario " + principal.getUsername());
+
+        try {
+            return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(Tipos.CONTEUDO));
         } catch (Exception e) {
             log.error("Erro ao listar tópicos.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

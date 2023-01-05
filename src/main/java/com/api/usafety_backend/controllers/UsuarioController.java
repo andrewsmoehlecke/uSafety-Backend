@@ -73,7 +73,7 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioDto>> listarUsuarios(Principal principal) {
         log.info("GET /usuario/listarUsuarios");
 
-        log.info(principal.toString());
+        log.info("Usuário logado: " + principal.getName());
 
         Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
 

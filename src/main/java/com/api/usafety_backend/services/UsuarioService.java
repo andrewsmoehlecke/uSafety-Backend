@@ -63,6 +63,8 @@ public class UsuarioService {
 
         try {
             if (validarUsuario(u)) {
+                TokenDto token = new TokenDto();
+                token.setAdmin(false);
 
                 u.limparCargos();
                 u.addCargo(Usuario.Cargos.USUARIO);
@@ -70,6 +72,7 @@ public class UsuarioService {
                 if (u.getUsername().equals(constantes.ADMIN_USERNAME)) {
                     u.addCargo(Usuario.Cargos.USUARIO);
                     u.addCargo(Usuario.Cargos.ADMIN);
+                    token.setAdmin(true);
                 }
 
                 u.setAtivo(true);
@@ -78,7 +81,9 @@ public class UsuarioService {
                 LoginUsuarioDto loginUsuario = new LoginUsuarioDto(usuarioRepository.save(u));
                 loginUsuario.setSenha(senhaUsuario);
 
-                return criarTokenParaUsuario(loginUsuario);
+                token.setToken(criarTokenParaUsuario(loginUsuario));
+
+                return token;
             }
 
             return null;
@@ -176,9 +181,13 @@ public class UsuarioService {
 
                 log.info("Usuario com credenciais válidas.");
 
+                Usuario u = usuarioRepository.findByUsername(usuario.getUsername());
+
                 String token = tokenHandler.createTokenForUser(principal);
 
                 TokenDto tokenDto = new TokenDto(token);
+
+                tokenDto.setAdmin(u.isAdmin());
 
                 return tokenDto;
             } catch (UsuarioDesabilitadoException e) {

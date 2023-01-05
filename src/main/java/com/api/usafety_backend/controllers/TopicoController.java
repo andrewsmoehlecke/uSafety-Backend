@@ -1,5 +1,6 @@
 package com.api.usafety_backend.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.usafety_backend.configs.UserPrincipal;
 import com.api.usafety_backend.entities.Topico.Tipos;
 import com.api.usafety_backend.entities.Usuario;
 import com.api.usafety_backend.entities.dtos.TopicoFullDto;
@@ -41,13 +41,13 @@ public class TopicoController {
 
     @PostMapping("/criarConteudo")
     public ResponseEntity<Void> criarConteudo(
-            UserPrincipal principal,
+            Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
         log.info("POST /topico/criarConteudo");
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
-            topicoService.salvar(topicoDto, Tipos.CONTEUDO, principal.getUsername());
+            topicoService.salvar(topicoDto, Tipos.CONTEUDO, principal.getName());
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (UsuarioNaoAutorizadoException e) {
@@ -60,10 +60,10 @@ public class TopicoController {
 
     @PostMapping("/criarDuvida")
     public ResponseEntity<Void> criarDuvida(
-            UserPrincipal principal,
+            Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
         log.info("POST /topico/criarDuvida");
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
             topicoService.salvar(topicoDto, Tipos.DUVIDA);
@@ -77,10 +77,10 @@ public class TopicoController {
 
     @PostMapping("/criarDiscussao")
     public ResponseEntity<Void> criarDiscussao(
-            UserPrincipal principal,
+            Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
         log.info("POST /topico/criarDiscussao");
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
             topicoService.salvar(topicoDto, Tipos.DISCUSSAO);
@@ -94,12 +94,12 @@ public class TopicoController {
 
     @PutMapping("/editar")
     public ResponseEntity<Void> editarTopico(
-            UserPrincipal principal,
+            Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
         log.info("PUT /topico/editar");
 
         try {
-            Usuario u = usuarioService.buscarPorUsername(principal.getUsername());
+            Usuario u = usuarioService.buscarPorUsername(principal.getName());
 
             topicoService.editar(topicoDto, u);
 
@@ -112,12 +112,12 @@ public class TopicoController {
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarTopico(
-            UserPrincipal principal,
+            Principal principal,
             @PathVariable("id") Long idTopico) {
         log.info("DELETE /topico/deletar");
 
         try {
-            Usuario u = usuarioService.buscarPorUsername(principal.getUsername());
+            Usuario u = usuarioService.buscarPorUsername(principal.getName());
 
             topicoService.deletar(idTopico, u);
 
@@ -130,9 +130,9 @@ public class TopicoController {
 
     @GetMapping("/buscarTodasDuvidas")
     public ResponseEntity<List<TopicoFullDto>> buscarTodasDuvidas(
-            UserPrincipal principal) {
+            Principal principal) {
         log.info("GET /topico/buscarTodasDuvidas");
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
             return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(Tipos.DUVIDA));
@@ -144,9 +144,9 @@ public class TopicoController {
 
     @GetMapping("/buscarTodasDiscussoes")
     public ResponseEntity<List<TopicoFullDto>> buscarTodasDiscussoes(
-            UserPrincipal principal) {
+            Principal principal) {
         log.info("GET /topico/buscarTodasDiscussoes");
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
             return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(Tipos.DISCUSSAO));
@@ -158,9 +158,9 @@ public class TopicoController {
 
     @GetMapping("/buscarTodoConteudo")
     public ResponseEntity<List<TopicoFullDto>> buscarTodoConteudo(
-            UserPrincipal principal) {
+            Principal principal) {
         log.info("GET /topico/buscarTodoConteudo");
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
             return ResponseEntity.ok(topicoService.buscarTopicosPorTipo(Tipos.CONTEUDO));
@@ -172,10 +172,10 @@ public class TopicoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TopicoFullDto> buscarTopicoPorId(
-            UserPrincipal principal,
+            Principal principal,
             @PathVariable("id") Long id) {
         log.info("GET /topico/" + id);
-        log.info("Usuario " + principal.getUsername());
+        log.info("Usuario " + principal.getName());
 
         try {
             return ResponseEntity.ok(new TopicoFullDto(topicoService.buscarPorId(id)));

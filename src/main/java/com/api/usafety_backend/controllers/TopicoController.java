@@ -128,10 +128,10 @@ public class TopicoController {
         }
     }
 
-    @GetMapping("/buscarTodasDuvidas")
-    public ResponseEntity<List<TopicoFullDto>> buscarTodasDuvidas(
+    @GetMapping("/buscarDuvidas")
+    public ResponseEntity<List<TopicoFullDto>> buscarDuvidas(
             Principal principal) {
-        log.info("GET /topico/buscarTodasDuvidas");
+        log.info("GET /topico/buscarDuvidas");
         log.info("Usuario " + principal.getName());
 
         try {
@@ -142,10 +142,10 @@ public class TopicoController {
         }
     }
 
-    @GetMapping("/buscarTodasDiscussoes")
+    @GetMapping("/buscarDiscussoes")
     public ResponseEntity<List<TopicoFullDto>> buscarTodasDiscussoes(
             Principal principal) {
-        log.info("GET /topico/buscarTodasDiscussoes");
+        log.info("GET /topico/buscarDiscussoes");
         log.info("Usuario " + principal.getName());
 
         try {
@@ -156,10 +156,10 @@ public class TopicoController {
         }
     }
 
-    @GetMapping("/buscarTodoConteudo")
-    public ResponseEntity<List<TopicoFullDto>> buscarTodoConteudo(
+    @GetMapping("/buscarConteudos")
+    public ResponseEntity<List<TopicoFullDto>> buscarConteudos(
             Principal principal) {
-        log.info("GET /topico/buscarTodoConteudo");
+        log.info("GET /topico/buscarConteudos");
         log.info("Usuario " + principal.getName());
 
         try {

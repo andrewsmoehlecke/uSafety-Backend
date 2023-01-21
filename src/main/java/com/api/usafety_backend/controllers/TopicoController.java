@@ -39,11 +39,11 @@ public class TopicoController {
 
     Logger log = LoggerFactory.getLogger(TopicoController.class);
 
-    @PostMapping("/criarConteudo")
+    @PostMapping("/conteudo")
     public ResponseEntity<Void> criarConteudo(
             Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
-        log.info("POST /topico/criarConteudo");
+        log.info("POST /topico/conteudo");
         log.info("Usuario " + principal.getName());
 
         try {
@@ -58,11 +58,11 @@ public class TopicoController {
         }
     }
 
-    @PostMapping("/criarDuvida")
+    @PostMapping("/duvida")
     public ResponseEntity<Void> criarDuvida(
             Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
-        log.info("POST /topico/criarDuvida");
+        log.info("POST /topico/duvida");
         log.info("Usuario " + principal.getName());
 
         try {
@@ -75,11 +75,11 @@ public class TopicoController {
         }
     }
 
-    @PostMapping("/criarDiscussao")
+    @PostMapping("/discussao")
     public ResponseEntity<Void> criarDiscussao(
             Principal principal,
             @RequestBody TopicoFullDto topicoDto) {
-        log.info("POST /topico/criarDiscussao");
+        log.info("POST /topico/discussao");
         log.info("Usuario " + principal.getName());
 
         try {

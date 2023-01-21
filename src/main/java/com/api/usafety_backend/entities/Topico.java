@@ -1,5 +1,6 @@
 package com.api.usafety_backend.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class Topico {
         this.id = topicoDto.getId();
         this.titulo = topicoDto.getTitulo();
         this.conteudo = topicoDto.getConteudo();
-        this.horaPublicacao = topicoDto.getHoraPublicacao();
+        this.horaPublicacao = LocalDateTime.now();
         this.imagem = topicoDto.getImagem();
         this.anonimo = topicoDto.isAnonimo();
         this.autor = new Usuario(topicoDto.getAutor());

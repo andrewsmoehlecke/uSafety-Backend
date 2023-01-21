@@ -81,7 +81,7 @@ public class UsuarioService {
                 LoginUsuarioDto loginUsuario = new LoginUsuarioDto(usuarioRepository.save(u));
                 loginUsuario.setSenha(senhaUsuario);
 
-                token.setToken(criarTokenParaUsuario(loginUsuario));
+                token.setToken(criarTokenParaUsuario(loginUsuario).getToken());
 
                 return token;
             }

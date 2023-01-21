@@ -1,5 +1,6 @@
 package com.api.usafety_backend.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +85,8 @@ public class TopicoService {
         log.info("Usuario " + usuario.getUsername() + " está editando o tópico " + topicoDto.getId());
 
         Topico topico = new Topico(topicoDto);
+
+        topico.setHoraEdicao(LocalDateTime.now());
 
         if (topico.getAutor().getId() == usuario.getId() || usuario.isAdmin()) {
             topicoRepository.save(topico);

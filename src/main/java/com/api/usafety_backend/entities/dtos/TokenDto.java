@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class TokenDto {
+
     private String token;
     private boolean admin;
 

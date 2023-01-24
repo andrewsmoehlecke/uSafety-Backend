@@ -57,7 +57,7 @@ public class LoginController {
 
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body(new ErroDto(constantes.SENHA_INCORRETA));
+                    .body(new ErroDto(constantes.USERNAME_SENHA_INCORRETA));
         }
     }
 

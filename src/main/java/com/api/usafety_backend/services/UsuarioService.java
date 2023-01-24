@@ -193,7 +193,7 @@ public class UsuarioService {
             } catch (UsuarioDesabilitadoException e) {
                 log.error("Erro ao autenticar usuario ", e);
 
-                throw new ErroAoAutenticarUsuarioException(constantes.SENHA_INCORRETA);
+                throw new ErroAoAutenticarUsuarioException(constantes.USERNAME_SENHA_INCORRETA);
             }
         }
     }

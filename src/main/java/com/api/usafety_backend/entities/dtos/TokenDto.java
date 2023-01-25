@@ -13,6 +13,7 @@ public class TokenDto {
 
     private String token;
     private boolean admin;
+    private String username;
 
     public TokenDto(String token) {
         this.token = token;

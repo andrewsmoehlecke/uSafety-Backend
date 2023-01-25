@@ -188,6 +188,7 @@ public class UsuarioService {
                 TokenDto tokenDto = new TokenDto(token);
 
                 tokenDto.setAdmin(u.isAdmin());
+                tokenDto.setUsername(u.getUsername());
 
                 return tokenDto;
             } catch (UsuarioDesabilitadoException e) {

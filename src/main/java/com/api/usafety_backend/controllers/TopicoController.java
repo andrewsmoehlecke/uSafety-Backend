@@ -110,16 +110,16 @@ public class TopicoController {
         }
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletarTopico(
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<Void> excluirTopico(
             Principal principal,
             @PathVariable("id") Long idTopico) {
-        log.info("DELETE /topico/deletar");
+        log.info("DELETE /topico/excluir");
 
         try {
             Usuario u = usuarioService.buscarPorUsername(principal.getName());
 
-            topicoService.deletar(idTopico, u);
+            topicoService.excluir(idTopico, u);
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {

@@ -53,7 +53,7 @@ public class TopicoService {
         }
     }
 
-    public void deletar(Long idTopico, Usuario usuario) {
+    public void excluir(Long idTopico, Usuario usuario) {
         log.info("Usuario " + usuario.getUsername() + " está deletando o tópico " + idTopico);
 
         Topico topico = topicoRepository.findById(idTopico).get();

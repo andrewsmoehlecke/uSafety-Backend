@@ -83,4 +83,15 @@ public class UsuarioController {
 
         return ResponseEntity.ok(usuarioService.buscarTodosUsuariosDto());
     }
+
+    @GetMapping("/buscarUsuarioLogado")
+    public ResponseEntity<UsuarioDto> buscarUsuarioLogado(Principal principal) {
+        log.info("GET /usuario/buscarUsuarioLogado");
+
+        log.info("Usuário logado: " + principal.getName());
+
+        Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
+
+        return ResponseEntity.ok(new UsuarioDto(usuario));
+    }
 }

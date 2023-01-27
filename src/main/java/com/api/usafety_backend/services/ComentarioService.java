@@ -22,9 +22,6 @@ public class ComentarioService {
     private ComentarioRepository comentarioRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
     private TopicoService topicoService;
 
     Logger log = LoggerFactory.getLogger(ComentarioService.class);
@@ -33,20 +30,15 @@ public class ComentarioService {
         log.info(autor.getUsername() + " esta comentanto no topico: " + dto.getTopico());
 
         try {
+            Comentario comentario = new Comentario();
 
-            if (dto.getAutor().equals(autor.getId())) {
-                Comentario comentario = new Comentario();
+            comentario.setConteudo(dto.getConteudo());
+            comentario.setHoraPublicacao(LocalDateTime.now());
+            comentario.setVisivel(true);
+            comentario.setAutor(autor);
+            comentario.setTopico(topicoService.buscarPorId(dto.getTopico()));
 
-                comentario.setConteudo(dto.getConteudo());
-                comentario.setHoraPublicacao(LocalDateTime.now());
-                comentario.setVisivel(true);
-                comentario.setAutor(usuarioService.buscarPorId(dto.getAutor()));
-                comentario.setTopico(topicoService.buscarPorId(dto.getTopico()));
-
-                comentarioRepository.save(comentario);
-            } else {
-                log.warn("Usuario nao autorizado a comentar no topico");
-            }
+            comentarioRepository.save(comentario);
         } catch (Exception e) {
             log.error("Erro ao criar comentario: ", e);
         }

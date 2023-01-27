@@ -49,6 +49,7 @@ public class Comentario {
         this.id = dto.getId();
         this.conteudo = dto.getConteudo();
         this.horaPublicacao = dto.getHoraPublicacao();
+        this.ultimaEdicao = dto.getUltimaEdicao();
         this.visivel = dto.isVisivel();
         this.editado = dto.isEditado();
         this.autor = new Usuario(dto.getAutor());

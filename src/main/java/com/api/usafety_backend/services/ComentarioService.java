@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.usafety_backend.entities.Comentario;
 import com.api.usafety_backend.entities.Usuario;
-import com.api.usafety_backend.entities.dtos.ComentarioFullDto;
+import com.api.usafety_backend.entities.dtos.ComentarioDto;
 import com.api.usafety_backend.entities.dtos.CriarComentarioDto;
 import com.api.usafety_backend.repositories.ComentarioRepository;
 
@@ -82,16 +82,16 @@ public class ComentarioService {
         }
     }
 
-    public List<ComentarioFullDto> buscarPorTopico(Long id) {
+    public List<ComentarioDto> buscarPorTopico(Long id) {
         log.info("Buscando comentarios do topico: " + id);
         try {
             return comentarioRepository.findByTopico_Id(id)
                     .stream()
-                    .map(ComentarioFullDto::new)
+                    .map(ComentarioDto::new)
                     .toList();
         } catch (Exception e) {
             log.error("Erro ao buscar comentarios: ", e);
-            return new ArrayList<ComentarioFullDto>();
+            return new ArrayList<ComentarioDto>();
         }
     }
 }

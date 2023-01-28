@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.Usuario;
-import com.api.usafety_backend.entities.dtos.ComentarioFullDto;
+import com.api.usafety_backend.entities.dtos.ComentarioDto;
 import com.api.usafety_backend.entities.dtos.CriarComentarioDto;
 import com.api.usafety_backend.services.ComentarioService;
 import com.api.usafety_backend.services.UsuarioService;
@@ -75,7 +75,7 @@ public class ComentarioController {
     }
 
     @GetMapping("/buscarPorTopico")
-    public ResponseEntity<List<ComentarioFullDto>> buscarPorTopico(
+    public ResponseEntity<List<ComentarioDto>> buscarPorTopico(
             @RequestParam Long id) {
         log.info("GET /comentario/buscarPorTopico");
 

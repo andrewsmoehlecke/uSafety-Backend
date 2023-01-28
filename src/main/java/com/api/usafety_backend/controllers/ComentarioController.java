@@ -61,15 +61,15 @@ public class ComentarioController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/deletar")
-    public ResponseEntity<Void> deletarComentario(
+    @DeleteMapping("/excluir")
+    public ResponseEntity<Void> excluirComentario(
             Principal principal,
             @RequestParam Long id) {
-        log.info("DELETE /comentario/deletar");
+        log.info("DELETE /comentario/excluir");
 
         Usuario autor = usuarioService.buscarPorUsername(principal.getName());
 
-        comentarioService.deletar(id, autor);
+        comentarioService.excluir(id, autor);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

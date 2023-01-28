@@ -64,8 +64,8 @@ public class ComentarioService {
         }
     }
 
-    public void deletar(Long id, Usuario autor) {
-        log.info(autor.getUsername() + " esta deletando o comentario: " + id);
+    public void excluir(Long id, Usuario autor) {
+        log.info(autor.getUsername() + " esta excluindo o comentario: " + id);
 
         try {
 

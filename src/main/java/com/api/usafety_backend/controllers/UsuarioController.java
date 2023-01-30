@@ -50,16 +50,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDto);
     }
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<Void> atualizarUsuario(
+    @PutMapping("/editar")
+    public ResponseEntity<Void> editarUsuario(
             Principal principal,
             @RequestBody UsuarioDto usuarioDto) {
-        log.info("POST /usuario/atualizar");
+        log.info("POST /usuario/editar");
 
         try {
             Usuario editor = usuarioService.buscarPorUsername(principal.getName());
 
-            usuarioService.atualizar(new Usuario(usuarioDto), editor);
+            usuarioService.editar(new Usuario(usuarioDto), editor);
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -69,9 +69,9 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/listarUsuarios")
-    public ResponseEntity<List<UsuarioDto>> listarUsuarios(Principal principal) {
-        log.info("GET /usuario/listarUsuarios");
+    @GetMapping("/buscarUsuarios")
+    public ResponseEntity<List<UsuarioDto>> buscarUsuarios(Principal principal) {
+        log.info("GET /usuario/buscarUsuarios");
 
         log.info("Usuário logado: " + principal.getName());
 

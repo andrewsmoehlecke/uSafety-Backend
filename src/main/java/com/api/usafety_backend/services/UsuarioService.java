@@ -94,7 +94,7 @@ public class UsuarioService {
         }
     }
 
-    public void atualizar(Usuario u, Usuario editor) {
+    public void editar(Usuario u, Usuario editor) {
         if (u.equals(editor) || editor.isAdmin() && validarUsuario(u)) {
 
             /* Para usuarios não adicionarem o cargo de admin ao atualizar */

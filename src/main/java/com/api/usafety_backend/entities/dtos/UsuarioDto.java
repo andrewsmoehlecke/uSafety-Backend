@@ -10,11 +10,9 @@ import com.api.usafety_backend.entities.Usuario.Cargos;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ToString
 public class UsuarioDto extends LoginUsuarioDto {
 
     private Long id;

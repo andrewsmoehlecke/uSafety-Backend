@@ -23,7 +23,6 @@ import com.api.usafety_backend.entities.dtos.TopicoFullDto;
 import com.api.usafety_backend.exceptions.UsuarioNaoAutorizadoException;
 import com.api.usafety_backend.services.TopicoService;
 import com.api.usafety_backend.services.UsuarioService;
-import com.api.usafety_backend.util.Constantes;
 
 @RestController
 @RequestMapping("/topico")
@@ -34,8 +33,6 @@ public class TopicoController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-    private Constantes constantes = new Constantes();
 
     Logger log = LoggerFactory.getLogger(TopicoController.class);
 

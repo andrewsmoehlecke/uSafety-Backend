@@ -38,6 +38,12 @@ public class Constantes {
     public final String USERNAME_SENHA_INCORRETA = "usernameOuSenhaIncorreta";
 
     /*
+     * Mensagens de sucesso
+     */
+    public final String USUARIO_CRIADO = "usuarioCriado";
+    public final String USUARIO_ATUALIZADO = "usuarioAtualizado";
+
+    /*
      * Tipos de tópicos
      */
     public final String TOPICO_DUVIDA = "DUVIDA";

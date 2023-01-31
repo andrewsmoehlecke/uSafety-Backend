@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.dtos.RespostaSimplesDto;
 import com.api.usafety_backend.entities.dtos.TokenDto;
 import com.api.usafety_backend.entities.dtos.UsuarioDto;
 import com.api.usafety_backend.services.UsuarioService;
@@ -51,17 +52,16 @@ public class UsuarioController {
     }
 
     @PutMapping("/editar")
-    public ResponseEntity<Void> editarUsuario(
+    public ResponseEntity<RespostaSimplesDto> editarUsuario(
             Principal principal,
             @RequestBody UsuarioDto usuarioDto) {
         log.info("POST /usuario/editar");
 
         try {
+            log.info(usuarioDto.toString());
             Usuario editor = usuarioService.buscarPorUsername(principal.getName());
 
-            usuarioService.editar(new Usuario(usuarioDto), editor);
-
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new RespostaSimplesDto(usuarioService.editar(usuarioDto, editor)));
         } catch (Exception e) {
             log.error("Erro ao atualizar usuário", e);
 

@@ -62,7 +62,7 @@ public class UsuarioService {
         String senhaUsuario = u.getSenha();
 
         try {
-            if (validarUsuario(u)) {
+            if (validarUsuario(u, false)) {
                 TokenDto token = new TokenDto();
                 token.setAdmin(false);
 
@@ -94,8 +94,14 @@ public class UsuarioService {
         }
     }
 
-    public void editar(Usuario u, Usuario editor) {
-        if (u.equals(editor) || editor.isAdmin() && validarUsuario(u)) {
+    public String editar(UsuarioDto usuarioDto, Usuario editor) {
+        Usuario u = buscarPorId(usuarioDto.getId());
+
+        if (u == null) {
+            return constantes.USUARIO_NAO_ENCONTRADO;
+        }
+
+        if (u.equals(editor) || editor.isAdmin() && validarUsuario(u, true)) {
 
             /* Para usuarios não adicionarem o cargo de admin ao atualizar */
             if (!editor.isAdmin()) {
@@ -103,8 +109,15 @@ public class UsuarioService {
                 u.addCargo(Usuario.Cargos.USUARIO);
             }
 
+            u.setDataNascimento(usuarioDto.getDataNascimento());
+            u.setEmail(usuarioDto.getEmail());
+            u.setNomeCompleto(usuarioDto.getNomeCompleto());
+            u.setFotoPerfil(usuarioDto.getFotoPerfil());
+
             usuarioRepository.save(u);
         }
+
+        return constantes.USUARIO_ATUALIZADO;
     }
 
     public void deletar(Usuario u) {
@@ -126,12 +139,12 @@ public class UsuarioService {
     /*
      * Validando os campos do usuário
      */
-    public boolean validarUsuario(Usuario u) {
+    public boolean validarUsuario(Usuario u, boolean edicao) {
         log.info(u.toString());
         try {
             log.info("Validando o usuario " + u.getUsername());
 
-            if (usuarioRepository.findByUsername(u.getUsername()) != null) {
+            if (!edicao && usuarioRepository.findByUsername(u.getUsername()) != null) {
                 throw new UsuarioJaExistenteException("Usuario já existente.");
             }
             if (!RegexValidador.validador(u.getEmail(), constantes.REGEX_EMAIL)) {

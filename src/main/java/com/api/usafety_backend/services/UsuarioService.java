@@ -65,6 +65,7 @@ public class UsuarioService {
             if (validarUsuario(u, false)) {
                 TokenDto token = new TokenDto();
                 token.setAdmin(false);
+                token.setUsername(u.getUsername());
 
                 u.limparCargos();
                 u.addCargo(Usuario.Cargos.USUARIO);

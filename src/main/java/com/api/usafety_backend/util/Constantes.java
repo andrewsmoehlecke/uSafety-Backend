@@ -36,12 +36,15 @@ public class Constantes {
     public final String USUARIO_NAO_ENCONTRADO = "usuarioNaoEncontrado";
     public final String USUARIO_DESABILITADO = "usuarioDesabilitado";
     public final String USERNAME_SENHA_INCORRETA = "usernameOuSenhaIncorreta";
+    public final String SENHAS_NAO_COINCIDEM = "senhasNaoCoincidem";
+    public final String SENHA_INCORRETA = "senhaIncorreta";
 
     /*
      * Mensagens de sucesso
      */
     public final String USUARIO_CRIADO = "usuarioCriado";
     public final String USUARIO_ATUALIZADO = "usuarioAtualizado";
+    public final String SENHA_ALTERADA = "senhaAlterada";
 
     /*
      * Tipos de tópicos
@@ -58,6 +61,6 @@ public class Constantes {
     /*
      * Email do sistema
      */
-    public final String EMAIL = "andrewsmoehlcke@gmail.com";
-    public final String SENHA_EMAIL = "1234567890acm";
+    public final String EMAIL = "";
+    public final String SENHA_EMAIL = "";
 }

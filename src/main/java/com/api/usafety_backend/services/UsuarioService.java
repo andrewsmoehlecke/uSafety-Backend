@@ -20,6 +20,7 @@ import com.api.usafety_backend.configs.CustomUserDetailsService;
 import com.api.usafety_backend.configs.TokenHandler;
 import com.api.usafety_backend.configs.UserPrincipal;
 import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.dtos.AlterarSenhaDto;
 import com.api.usafety_backend.entities.dtos.LoginUsuarioDto;
 import com.api.usafety_backend.entities.dtos.TokenDto;
 import com.api.usafety_backend.entities.dtos.UsuarioDto;
@@ -28,6 +29,7 @@ import com.api.usafety_backend.exceptions.EmailInvalidoException;
 import com.api.usafety_backend.exceptions.ErroAoAutenticarUsuarioException;
 import com.api.usafety_backend.exceptions.UsuarioDesabilitadoException;
 import com.api.usafety_backend.exceptions.UsuarioJaExistenteException;
+import com.api.usafety_backend.exceptions.UsuarioNaoAutorizadoException;
 import com.api.usafety_backend.repositories.UsuarioRepository;
 import com.api.usafety_backend.util.Constantes;
 import com.api.usafety_backend.util.RegexValidador;
@@ -259,6 +261,31 @@ public class UsuarioService {
                     corpoEmail);
         } catch (Exception e) {
             log.error("Erro ao gerar codigo de recuperacao", e);
+        }
+    }
+
+    public String alterarSenha(Usuario editor, AlterarSenhaDto dto, Long id) {
+        log.info("Alterando senha do usuario " + editor.getUsername());
+
+        Usuario u = usuarioRepository.findById(id).get();
+
+        log.info(codificadorDeSenha().encode(dto.getSenhaAtual()));
+        log.info(u.getSenha());
+
+        if (editor.isAdmin() || editor.getId().equals(u.getId())) {
+            try {
+                autenticar(u.getUsername(), dto.getSenhaAtual());
+
+                u.setSenha(codificadorDeSenha().encode(dto.getNovaSenha()));
+
+                usuarioRepository.save(u);
+
+                return constantes.SENHA_ALTERADA;
+            } catch (UsuarioDesabilitadoException e) {
+                return constantes.SENHA_INCORRETA;
+            }
+        } else {
+            throw new UsuarioNaoAutorizadoException("Usuario sem permissao para alterar senha.");
         }
     }
 }

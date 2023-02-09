@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.Usuario;
+import com.api.usafety_backend.entities.dtos.AlterarSenhaDto;
 import com.api.usafety_backend.entities.dtos.RespostaSimplesDto;
 import com.api.usafety_backend.entities.dtos.TokenDto;
 import com.api.usafety_backend.entities.dtos.UsuarioDto;
+import com.api.usafety_backend.exceptions.UsuarioNaoAutorizadoException;
 import com.api.usafety_backend.services.UsuarioService;
 
 @RestController
@@ -93,5 +95,27 @@ public class UsuarioController {
         Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
 
         return ResponseEntity.ok(new UsuarioDto(usuario));
+    }
+
+    @PutMapping("/alterarSenha/{id}")
+    public ResponseEntity<RespostaSimplesDto> alterarSenha(
+            Principal principal,
+            @PathVariable("id") Long id,
+            @RequestBody AlterarSenhaDto dto) {
+        log.info("PUT /usuario/alterarSenha");
+
+        try {
+            Usuario editor = usuarioService.buscarPorUsername(principal.getName());
+
+            return ResponseEntity.ok(new RespostaSimplesDto(usuarioService.alterarSenha(editor, dto, id)));
+        } catch (UsuarioNaoAutorizadoException e) {
+            log.error("Usuário não autorizado", e);
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            log.error("Erro ao atualizar usuário", e);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

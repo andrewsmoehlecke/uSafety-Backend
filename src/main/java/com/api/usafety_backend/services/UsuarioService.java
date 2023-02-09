@@ -269,13 +269,30 @@ public class UsuarioService {
 
         Usuario u = usuarioRepository.findById(id).get();
 
-        log.info(codificadorDeSenha().encode(dto.getSenhaAtual()));
-        log.info(u.getSenha());
-
         if (editor.isAdmin() || editor.getId().equals(u.getId())) {
             try {
                 autenticar(u.getUsername(), dto.getSenhaAtual());
 
+                u.setSenha(codificadorDeSenha().encode(dto.getNovaSenha()));
+
+                usuarioRepository.save(u);
+
+                return constantes.SENHA_ALTERADA;
+            } catch (UsuarioDesabilitadoException e) {
+                return constantes.SENHA_INCORRETA;
+            }
+        } else {
+            throw new UsuarioNaoAutorizadoException("Usuario sem permissao para alterar senha.");
+        }
+    }
+
+    public String adminAlterarSenhaDoUsuario(Usuario admin, AlterarSenhaDto dto, Long id) {
+        Usuario u = usuarioRepository.findById(id).get();
+
+        log.info("Alterando senha do usuario " + u.getUsername());
+
+        if (admin.isAdmin()) {
+            try {
                 u.setSenha(codificadorDeSenha().encode(dto.getNovaSenha()));
 
                 usuarioRepository.save(u);

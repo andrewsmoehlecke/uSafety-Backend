@@ -102,7 +102,7 @@ public class UsuarioController {
             Principal principal,
             @PathVariable("id") Long id,
             @RequestBody AlterarSenhaDto dto) {
-        log.info("PUT /usuario/alterarSenha");
+        log.info("PUT /usuario/alterarSenha/" + id);
 
         try {
             Usuario editor = usuarioService.buscarPorUsername(principal.getName());

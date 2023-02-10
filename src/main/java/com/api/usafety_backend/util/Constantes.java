@@ -61,6 +61,6 @@ public class Constantes {
     /*
      * Email do sistema
      */
-    public final String EMAIL = "";
-    public final String SENHA_EMAIL = "";
+    public final String EMAIL = "usafety@gamers-ifsul.tk";
+    public final String SENHA_EMAIL = "uSafety-email007";
 }

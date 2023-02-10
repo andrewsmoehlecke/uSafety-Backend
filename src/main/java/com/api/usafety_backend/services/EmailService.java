@@ -30,14 +30,15 @@ public class EmailService {
         Properties props = new Properties();
 
         /** Parâmetros de conexão com servidor Gmail */
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", "mail.gamers-ifsul.tk");
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.starttls.enabled", "false");
+        props.put("mail.smtp.starttls.enabled", "true");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.ssl.trust", "mail.gamers-ifsul.tk");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -50,7 +51,6 @@ public class EmailService {
         session.setDebug(true);
 
         try {
-
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(constantes.EMAIL));
 
@@ -64,7 +64,6 @@ public class EmailService {
             Transport.send(message);
 
             log.info("Email enviado com sucesso");
-
         } catch (MessagingException e) {
             log.error("Erro ao enviar email", e);
 

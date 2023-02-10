@@ -37,6 +37,7 @@ public class EmailService {
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.starttls.enabled", "true");
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
         props.put("mail.smtp.ssl.trust", "mail.gamers-ifsul.tk");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 

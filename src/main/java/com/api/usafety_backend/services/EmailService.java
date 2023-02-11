@@ -1,5 +1,6 @@
 package com.api.usafety_backend.services;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -53,11 +54,9 @@ public class EmailService {
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(constantes.EMAIL));
+            message.setFrom(new InternetAddress(constantes.EMAIL, "uSafety"));
 
-            Address destino = new InternetAddress(destinatario);
-
-            message.setRecipient(Message.RecipientType.TO, destino);
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
             message.setSubject(assunto);
             message.setText(corpo);
 
@@ -66,6 +65,10 @@ public class EmailService {
 
             log.info("Email enviado com sucesso");
         } catch (MessagingException e) {
+            log.error("Erro ao enviar email", e);
+
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
             log.error("Erro ao enviar email", e);
 
             throw new RuntimeException(e);

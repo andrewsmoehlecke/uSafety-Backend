@@ -3,7 +3,6 @@ package com.api.usafety_backend.services;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -59,6 +58,10 @@ public class EmailService {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
             message.setSubject(assunto);
             message.setText(corpo);
+
+            /*
+             * message.setContent("<h1>Teste de envio de email</h1>", "text/html");
+             */
 
             /** Método para enviar a mensagem criada */
             Transport.send(message);

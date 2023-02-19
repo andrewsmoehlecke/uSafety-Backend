@@ -38,6 +38,8 @@ public class Constantes {
     public final String USERNAME_SENHA_INCORRETA = "usernameOuSenhaIncorreta";
     public final String SENHAS_NAO_COINCIDEM = "senhasNaoCoincidem";
     public final String SENHA_INCORRETA = "senhaIncorreta";
+    public final String ERRO_ENVIAR_EMAIL = "erroAoEnviarEmail";
+    public final String CODIGO_INVALIDO = "codigoInvalido";
 
     /*
      * Mensagens de sucesso
@@ -45,6 +47,8 @@ public class Constantes {
     public final String USUARIO_CRIADO = "usuarioCriado";
     public final String USUARIO_ATUALIZADO = "usuarioAtualizado";
     public final String SENHA_ALTERADA = "senhaAlterada";
+    public final String EMAIL_ENVIADO = "emailEnviado";
+    public final String OK = "ok";
 
     /*
      * Tipos de tópicos

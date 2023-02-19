@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.dtos.ErroDto;
 import com.api.usafety_backend.entities.dtos.LoginUsuarioDto;
+import com.api.usafety_backend.entities.dtos.RespostaSimplesDto;
 import com.api.usafety_backend.entities.dtos.TokenDto;
 import com.api.usafety_backend.exceptions.ErroAoAutenticarUsuarioException;
 import com.api.usafety_backend.exceptions.UsuarioDesabilitadoException;
@@ -61,13 +62,38 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/enviarCodRecuperao")
+    public ResponseEntity<RespostaSimplesDto> enviarCodRecuperao(@RequestParam("usuario") String usuario) {
+        log.info("POST /login/enviarCodRecuperao");
+        log.info("Usuario: " + usuario);
+
+        try {
+            usuarioService.gerarCodigoDeRecuperacao(usuario);
+
+            return ResponseEntity.ok(new RespostaSimplesDto(constantes.EMAIL_ENVIADO));
+        } catch (NullPointerException e) {
+            log.error("Usuario nao encontrado", e);
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new RespostaSimplesDto(constantes.USUARIO_NAO_ENCONTRADO));
+        } catch (Exception e) {
+            log.error("Erro ao enviar codigo de recuperação para o usuario " + usuario + ".", e);
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new RespostaSimplesDto(constantes.ERRO_ENVIAR_EMAIL));
+        }
+
+    }
+
     @PostMapping("/recuperarAcesso")
-    public ResponseEntity<Void> recuperarAcesso(@RequestParam("username") String username) {
+    public ResponseEntity<TokenDto> recuperarAcesso(
+            @RequestParam("usuario") String usuario,
+            @RequestParam("codigo") String codigo) {
         log.info("POST /login/recuperarAcesso");
-        log.info("Usuario: " + username);
+        log.info("Usuario: " + usuario);
 
-        usuarioService.gerarCodigoDeRecuperacao(username);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(usuarioService.recuperarAcesso(usuario, codigo));
     }
 }

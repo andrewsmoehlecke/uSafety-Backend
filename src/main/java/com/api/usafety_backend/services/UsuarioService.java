@@ -182,9 +182,7 @@ public class UsuarioService {
     public TokenDto criarTokenParaUsuario(LoginUsuarioDto usuario) {
         log.info("Criando token para o usuario " + usuario.getUsername());
 
-        UserPrincipal principal = null;
-
-        principal = (UserPrincipal) customUserDetailService
+        UserPrincipal principal = (UserPrincipal) customUserDetailService
                 .loadUserByUsername(usuario.getUsername());
 
         if (!principal.isEnabled()) {
@@ -304,5 +302,25 @@ public class UsuarioService {
         } else {
             throw new UsuarioNaoAutorizadoException("Usuario sem permissao para alterar senha.");
         }
+    }
+
+    public TokenDto recuperarAcesso(String username, String codigo) {
+        log.info("Recuperando senha do usuario " + username);
+
+        Usuario u = usuarioRepository.findByUsername(username);
+
+        if (u.getCodigoRecuperacao().equals(codigo)) {
+            UserPrincipal principal = (UserPrincipal) customUserDetailService
+                    .loadUserByUsername(username);
+
+            String token = tokenHandler.createTokenForUser(principal);
+
+            TokenDto tokenDto = new TokenDto(token);
+            tokenDto.setAdmin(u.isAdmin());
+
+            return tokenDto;
+        }
+
+        return null;
     }
 }

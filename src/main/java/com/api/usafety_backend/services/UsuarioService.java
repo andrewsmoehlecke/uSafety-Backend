@@ -135,8 +135,8 @@ public class UsuarioService {
         return usuarioRepository.findByUsername(username);
     }
 
-    public List<UsuarioDto> buscarTodosUsuariosDto() {
-        return usuarioRepository.findAll().stream().map(UsuarioDto::new).collect(Collectors.toList());
+    public List<UsuarioDto> buscarTodosUsuariosDto(Long id) {
+        return usuarioRepository.findAllByIdIsNot(id).stream().map(UsuarioDto::new).collect(Collectors.toList());
     }
 
     /*
@@ -251,7 +251,12 @@ public class UsuarioService {
 
             usuarioRepository.save(u);
 
-            String corpoEmail = codigo;
+            String corpoEmail = "Olá, " + u.getNomeCompleto() + "!\n\n"
+                    + "Você solicitou a recuperação de sua conta no aplicativo uSafety.\n\n"
+                    + "Seu código de recuperação é: " + codigo + "\n\n"
+                    + "Caso não tenha solicitado a recuperação de sua conta, ignore este e-mail.\n\n"
+                    + "Atenciosamente,\n"
+                    + "Equipe uSafety";
 
             emailService.enviarEmail(
                     u.getEmail(),
@@ -317,6 +322,7 @@ public class UsuarioService {
 
             TokenDto tokenDto = new TokenDto(token);
             tokenDto.setAdmin(u.isAdmin());
+            tokenDto.setUsername(u.getUsername());
 
             return tokenDto;
         }

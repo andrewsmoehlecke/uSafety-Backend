@@ -85,7 +85,7 @@ public class ComentarioService {
     public List<ComentarioDto> buscarPorTopico(Long id) {
         log.info("Buscando comentarios do topico: " + id);
         try {
-            return comentarioRepository.findByTopico_Id(id)
+            return comentarioRepository.findByTopico_IdAndAutor_Ativo(id, true)
                     .stream()
                     .map(ComentarioDto::new)
                     .toList();

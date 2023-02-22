@@ -83,7 +83,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        return ResponseEntity.ok(usuarioService.buscarTodosUsuariosDto());
+        return ResponseEntity.ok(usuarioService.buscarTodosUsuariosDto(usuario.getId()));
     }
 
     @GetMapping("/buscarUsuarioLogado")

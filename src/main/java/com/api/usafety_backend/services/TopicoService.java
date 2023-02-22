@@ -71,7 +71,7 @@ public class TopicoService {
     }
 
     public List<TopicoFullDto> buscarTopicosPorTipo(Tipos tipo) {
-        List<Topico> topicos = topicoRepository.findAllByTipoDeTopico(tipo);
+        List<Topico> topicos = topicoRepository.findAllByTipoDeTopicoAndAutor_Ativo(tipo, true);
 
         if (!topicos.isEmpty()) {
             return topicos.stream().map(topico -> mapper.map(topico, TopicoFullDto.class))

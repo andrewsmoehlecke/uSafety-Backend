@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.usafety_backend.entities.Usuario;
@@ -19,6 +20,8 @@ import com.api.usafety_backend.entities.dtos.AlterarSenhaDto;
 import com.api.usafety_backend.entities.dtos.RespostaSimplesDto;
 import com.api.usafety_backend.entities.dtos.UsuarioDto;
 import com.api.usafety_backend.exceptions.UsuarioNaoAutorizadoException;
+import com.api.usafety_backend.exceptions.UsuarioNaoEncontradoException;
+import com.api.usafety_backend.services.AdminService;
 import com.api.usafety_backend.services.UsuarioService;
 import com.api.usafety_backend.util.Constantes;
 
@@ -28,6 +31,9 @@ public class AdminController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private AdminService adminService;
 
     private final Constantes constantes = new Constantes();
 
@@ -73,6 +79,60 @@ public class AdminController {
             log.error("Usuário não autorizado", e);
 
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            log.error("Erro ao atualizar usuário", e);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/desabilitarUsuario/{id}")
+    public ResponseEntity<RespostaSimplesDto> desabilitarUsuario(
+            Principal principal,
+            @PathVariable Long id) {
+        log.info("PUT /admin/desabilitarUsuario/{0}", id);
+
+        try {
+            Usuario admin = usuarioService.buscarPorUsername(principal.getName());
+
+            adminService.alterarStatusUsuario(admin, id, false);
+
+            return ResponseEntity.ok(new RespostaSimplesDto("usuarioDesabilitado"));
+        } catch (UsuarioNaoAutorizadoException e) {
+            log.warn("Usuário não autorizado", e);
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (UsuarioNaoEncontradoException e) {
+            log.warn("Usuário não encontrado", e);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            log.error("Erro ao atualizar usuário", e);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/habilitarUsuario/{id}")
+    public ResponseEntity<RespostaSimplesDto> habilitarUsuario(
+            Principal principal,
+            @PathVariable Long id) {
+        log.info("PUT /admin/habilitarUsuario/{0}", id);
+
+        try {
+            Usuario admin = usuarioService.buscarPorUsername(principal.getName());
+
+            adminService.alterarStatusUsuario(admin, id, true);
+
+            return ResponseEntity.ok(new RespostaSimplesDto("usuarioHabilitado"));
+        } catch (UsuarioNaoAutorizadoException e) {
+            log.warn("Usuário não autorizado", e);
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (UsuarioNaoEncontradoException e) {
+            log.warn("Usuário não encontrado", e);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error("Erro ao atualizar usuário", e);
 

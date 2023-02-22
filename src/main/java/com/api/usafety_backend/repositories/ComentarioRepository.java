@@ -10,5 +10,5 @@ import com.api.usafety_backend.entities.Comentario;
 @Repository
 public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
 
-    public List<Comentario> findByTopico_Id(Long id);
+    public List<Comentario> findByTopico_IdAndAutor_Ativo(Long id, boolean ativo);
 }

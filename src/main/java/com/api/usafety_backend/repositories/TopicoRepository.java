@@ -11,5 +11,5 @@ import com.api.usafety_backend.entities.Topico.Tipos;
 @Repository
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
-    public List<Topico> findAllByTipoDeTopico(Tipos tipoDeTopico);
+    public List<Topico> findAllByTipoDeTopicoAndAutor_Ativo(Tipos tipoDeTopico, boolean ativo);
 }
